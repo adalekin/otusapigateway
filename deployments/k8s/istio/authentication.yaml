@@ -1,0 +1,30 @@
+apiVersion: security.istio.io/v1beta1
+kind: RequestAuthentication
+metadata:
+  name: jwt-auth
+spec:
+  selector:
+    matchLabels:
+      app: users
+  jwtRules:
+  - issuer: "affo"
+    jwksUri: http://affo-auth.default.svc.cluster.local/jwks/
+    outputPayloadToHeader: X-JWT-Payload
+    forwardOriginalToken: true
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: require-jwt
+spec:
+  selector:
+    matchLabels:
+      app: users
+  action: DENY
+  rules:
+  - from:
+    - source:
+        notRequestPrincipals: ["*"]
+    to:
+    - operation:
+        paths: ["/user/*", "/logout/"]

@@ -1,0 +1,11 @@
+kiali-operator:
+  namespaceOverride: "kiali-operator"
+
+## @section Database Parameters
+
+## PostgreSQL chart configuration
+## ref: https://github.com/bitnami/charts/blob/master/bitnami/postgresql/values.yaml
+##
+postgresql:
+  postgresqlDatabase: affo
+  postgresqlUsername: affo

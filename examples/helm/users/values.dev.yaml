@@ -1,0 +1,5 @@
+global:
+  postgresql:
+    existingSecret: affo
+  jwt:
+    existingSecret: affo

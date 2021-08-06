@@ -1,0 +1,12 @@
+dependencies:
+- name: auth
+  repository: ""
+  version: ~1.0.0
+- name: users
+  repository: ""
+  version: ~1.0.0
+- name: postgresql
+  repository: https://charts.bitnami.com/bitnami
+  version: 10.9.1
+digest: sha256:cfeb125df2427adc24df3dc48b9a6f8005dce63ce3bf7acf02e493505242960f
+generated: "2021-08-06T02:41:25.486347+03:00"
