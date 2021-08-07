@@ -1,0 +1,780 @@
+{
+	"info": {
+		"_postman_id": "9bb5a76c-1a8a-4d1a-8906-450c22521b0c",
+		"name": "users-auth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register user 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", () => {",
+							"  pm.response.to.have.status(201);",
+							"});",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.collectionVariables.set(\"user1Id\", jsonData.id);",
+							"pm.collectionVariables.set(\"user1Email\", jsonData.email);",
+							"pm.collectionVariables.set(\"user1Phone\", jsonData.phone);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"phone\": \"{{$randomPhoneNumber}}\",\n    \"first_name\": \"{{$randomFirstName}}\",\n    \"last_name\": \"{{$randomLastName}}\",\n    \"password\": \"{{user1Password}}\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/register/",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"register",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"<email>\",\n    \"phone\": \"12345678901\",\n    \"first_name\": \"Chin\",\n    \"last_name\": \"Sang\",\n    \"password\": \"<string>\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/register/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"register",
+								""
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"access_token\": \"minim labor\",\n \"created_at\": \"1948-06-15T04:48:17.854Z\",\n \"email\": \"<email>\",\n \"first_name\": \"Chin\",\n \"id\": 41934918,\n \"is_active\": false,\n \"last_login\": \"1954-10-08T10:26:06.705Z\",\n \"last_name\": \"Sang\",\n \"phone\": \"12345678901\",\n \"updated_at\": \"1995-08-22T09:10:19.276Z\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Unauthenticated - Get user 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 403\", () => {",
+							"  pm.response.to.have.status(403);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/user/{{user1Id}}/",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"user",
+						"{{user1Id}}",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/user/:user_id/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								":user_id",
+								""
+							],
+							"variable": [
+								{
+									"key": "user_id"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"created_at\": \"1942-03-25T19:18:31.957Z\",\n \"email\": \"<email>\",\n \"first_name\": \"Chin\",\n \"id\": 94251861,\n \"is_active\": false,\n \"last_login\": \"1964-08-10T00:31:19.610Z\",\n \"last_name\": \"Sang\",\n \"phone\": \"12345678901\",\n \"updated_at\": \"1968-12-29T12:47:45.227Z\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Authenticte user 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {",
+							"  pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.collectionVariables.set(\"user1AccessToken\", jsonData.access_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"{{user1Email}}\",\n    \"password\": \"{{user1Password}}\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/login/",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"login",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"<email>\",\n    \"password\": \"<string>\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"access_token\": \"ex in magna aliquip\"\n}"
+				}
+			]
+		},
+		{
+			"name": "user 1 - Get user 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {",
+							"  pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user1AccessToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/user/{{user1Id}}/",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"user",
+						"{{user1Id}}",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/user/:user_id/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								":user_id",
+								""
+							],
+							"variable": [
+								{
+									"key": "user_id"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"created_at\": \"1942-03-25T19:18:31.957Z\",\n \"email\": \"<email>\",\n \"first_name\": \"Chin\",\n \"id\": 94251861,\n \"is_active\": false,\n \"last_login\": \"1964-08-10T00:31:19.610Z\",\n \"last_name\": \"Sang\",\n \"phone\": \"12345678901\",\n \"updated_at\": \"1968-12-29T12:47:45.227Z\"\n}"
+				}
+			]
+		},
+		{
+			"name": "user 1 - Update user 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {",
+							"  pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Last name is {{testLastName}}\", () => {",
+							"  pm.response.to.have.status(200);",
+							"",
+							"  const responseJson = pm.response.json();",
+							"    pm.expect(responseJson.last_name).to.eql(pm.collectionVariables.get(\"user1TestLastName\"));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user1AccessToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"last_name\": \"{{user1TestLastName}}\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/user/{{user1Id}}/",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"user",
+						"{{user1Id}}",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"Chin\",\n    \"last_name\": \"Sang\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/:user_id/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								":user_id",
+								""
+							],
+							"variable": [
+								{
+									"key": "user_id"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"created_at\": \"1942-03-25T19:18:31.957Z\",\n \"email\": \"<email>\",\n \"first_name\": \"Chin\",\n \"id\": 94251861,\n \"is_active\": false,\n \"last_login\": \"1964-08-10T00:31:19.610Z\",\n \"last_name\": \"Sang\",\n \"phone\": \"12345678901\",\n \"updated_at\": \"1968-12-29T12:47:45.227Z\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Register user 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", () => {",
+							"  pm.response.to.have.status(201);",
+							"});",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.collectionVariables.set(\"user2Id\", jsonData.id);",
+							"pm.collectionVariables.set(\"user2Email\", jsonData.email);",
+							"pm.collectionVariables.set(\"user2Phone\", jsonData.phone);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"phone\": \"{{$randomPhoneNumber}}\",\n    \"first_name\": \"{{$randomFirstName}}\",\n    \"last_name\": \"{{$randomLastName}}\",\n    \"password\": \"{{user1Password}}\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/register/",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"register",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"<email>\",\n    \"phone\": \"12345678901\",\n    \"first_name\": \"Chin\",\n    \"last_name\": \"Sang\",\n    \"password\": \"<string>\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/register/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"register",
+								""
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"access_token\": \"minim labor\",\n \"created_at\": \"1948-06-15T04:48:17.854Z\",\n \"email\": \"<email>\",\n \"first_name\": \"Chin\",\n \"id\": 41934918,\n \"is_active\": false,\n \"last_login\": \"1954-10-08T10:26:06.705Z\",\n \"last_name\": \"Sang\",\n \"phone\": \"12345678901\",\n \"updated_at\": \"1995-08-22T09:10:19.276Z\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Authenticte user 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {",
+							"  pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.collectionVariables.set(\"user2AccessToken\", jsonData.access_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"{{user2Email}}\",\n    \"password\": \"{{user2Password}}\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/login/",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"login",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"<email>\",\n    \"password\": \"<string>\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"access_token\": \"ex in magna aliquip\"\n}"
+				}
+			]
+		},
+		{
+			"name": "user 2 - Get user 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 403\", () => {",
+							"  pm.response.to.have.status(403);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user2AccessToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/user/{{user1Id}}/",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"user",
+						"{{user1Id}}",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/user/:user_id/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								":user_id",
+								""
+							],
+							"variable": [
+								{
+									"key": "user_id"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"created_at\": \"1942-03-25T19:18:31.957Z\",\n \"email\": \"<email>\",\n \"first_name\": \"Chin\",\n \"id\": 94251861,\n \"is_active\": false,\n \"last_login\": \"1964-08-10T00:31:19.610Z\",\n \"last_name\": \"Sang\",\n \"phone\": \"12345678901\",\n \"updated_at\": \"1968-12-29T12:47:45.227Z\"\n}"
+				}
+			]
+		},
+		{
+			"name": "user 2 - Update user 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 403\", () => {",
+							"  pm.response.to.have.status(403);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user2AccessToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"last_name\": \"{{user1TestLastName}}\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/user/{{user1Id}}/",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"user",
+						"{{user1Id}}",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"Chin\",\n    \"last_name\": \"Sang\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/:user_id/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								":user_id",
+								""
+							],
+							"variable": [
+								{
+									"key": "user_id"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"created_at\": \"1942-03-25T19:18:31.957Z\",\n \"email\": \"<email>\",\n \"first_name\": \"Chin\",\n \"id\": 94251861,\n \"is_active\": false,\n \"last_login\": \"1964-08-10T00:31:19.610Z\",\n \"last_name\": \"Sang\",\n \"phone\": \"12345678901\",\n \"updated_at\": \"1968-12-29T12:47:45.227Z\"\n}"
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://arch.homework"
+		},
+		{
+			"key": "user1Email",
+			"value": ""
+		},
+		{
+			"key": "user1Phone",
+			"value": ""
+		},
+		{
+			"key": "user1Password",
+			"value": "qazwsx123"
+		},
+		{
+			"key": "user1Id",
+			"value": ""
+		},
+		{
+			"key": "user1AccessToken",
+			"value": ""
+		},
+		{
+			"key": "user1TestLastName",
+			"value": "Maradona"
+		},
+		{
+			"key": "user2Email",
+			"value": ""
+		},
+		{
+			"key": "user2Phone",
+			"value": ""
+		},
+		{
+			"key": "user2Password",
+			"value": "qazwsx123"
+		},
+		{
+			"key": "user2Id",
+			"value": ""
+		},
+		{
+			"key": "user2AccessToken",
+			"value": ""
+		}
+	]
+}

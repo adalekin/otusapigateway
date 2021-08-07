@@ -32,6 +32,9 @@ paths:
         - auth
       summary: Adds the specified JWT token into the blacklist
       operationId: users.api.auth.logout
+      parameters:
+        - $ref: "#/components/parameters/Authorization"
+        - $ref: "#/components/parameters/JWTPayload"
       responses:
         "204":
           description: Success
@@ -66,6 +69,8 @@ paths:
       operationId: users.api.user.get
       parameters:
         - $ref: "#/components/parameters/UserID"
+        - $ref: "#/components/parameters/Authorization"
+        - $ref: "#/components/parameters/JWTPayload"
       responses:
         "200":
           description: Success
@@ -80,6 +85,8 @@ paths:
       operationId: users.api.user.update
       parameters:
         - $ref: "#/components/parameters/UserID"
+        - $ref: "#/components/parameters/Authorization"
+        - $ref: "#/components/parameters/JWTPayload"
       requestBody:
         content:
           application/json:
@@ -113,6 +120,22 @@ components:
       name: user_id
       required: true
       description: A user identifier
+      schema:
+        type: string
+
+    Authorization:
+      in: "header"
+      name: Authorization
+      required: True
+      description: A JWT token
+      schema:
+        type: string
+
+    JWTPayload:
+      in: "header"
+      name: X-JWT-Payload
+      required: True
+      description: A JWT payload (Base64)
       schema:
         type: string
 

@@ -51,7 +51,7 @@ def test_user_update(client, user, user_access_token, user_jwt_payload):
     response = client.patch(
         f'/user/{user["id"]}/',
         json={"first_name": "test"},
-        headers={"X-JWT-Token": user_access_token, "X-JWT-Payload": user_jwt_payload},
+        headers={"Authorization": f"Bearer {user_access_token}", "X-JWT-Payload": user_jwt_payload},
     )
 
     assert_that(response, matchers.has_status(200))

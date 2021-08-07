@@ -14,7 +14,8 @@ nameOverride: ""
 fullnameOverride: ""
 appVersionOverride: ""
 
-podAnnotations: {}
+podAnnotations:
+  sidecar.istio.io/rewriteAppHTTPProbers: "true"
 
 service:
   type: ClusterIP

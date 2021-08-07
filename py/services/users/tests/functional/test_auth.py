@@ -33,8 +33,10 @@ def test_auth_login_failed(client):
     assert_that(response, matchers.has_status(401))
 
 
-def test_auth_logout(client, user_access_token, requests_mock):
+def test_auth_logout(client, user_access_token, user_jwt_payload, requests_mock):
     requests_mock.post(settings.AUTH_URL + "/jwt/blacklist/", status_code=204)
 
-    response = client.post("/logout/", headers={"X-JWT-Token": user_access_token})
+    response = client.post(
+        "/logout/", headers={"Authorization": f"Bearer {user_access_token}", "X-JWT-Payload": user_jwt_payload}
+    )
     assert_that(response, matchers.has_status(204))

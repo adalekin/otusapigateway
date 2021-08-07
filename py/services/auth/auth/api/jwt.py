@@ -11,7 +11,7 @@ from auth.extensions import cache
 
 def encode(encode_data):
     header = {"alg": "RS256"}
-    payload = {"iss": encode_data["iss"], "jti": generate_token(36), **encode_data["payload"]}
+    payload = {"iss": encode_data["iss"], "sub": encode_data["sub"], "jti": generate_token(36), **encode_data["payload"]}
 
     access_token = jwt.encode(header, payload, settings.JWT_PRIVATE_KEY).decode("utf-8")
 

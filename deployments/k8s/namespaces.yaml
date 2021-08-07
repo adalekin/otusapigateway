@@ -5,15 +5,3 @@ metadata:
   name: default
   labels:
     istio-injection: enabled
-
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: kiali
-
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: jaeger

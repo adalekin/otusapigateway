@@ -1,0 +1,60 @@
+newman
+
+users-auth
+
+→ Register user 1
+  POST http://arch.homework/register/ [201 Created, 994B, 341ms]
+  ✓  Status code is 201
+
+→ Unauthenticated - Get user 1
+  GET http://arch.homework/user/47/ [403 Forbidden, 183B, 28ms]
+  ✓  Status code is 403
+
+→ Authenticte user 1
+  POST http://arch.homework/login/ [200 OK, 989B, 464ms]
+  ✓  Status code is 200
+
+→ user 1 - Get user 1
+  GET http://arch.homework/user/47/ [200 OK, 471B, 42ms]
+  ✓  Status code is 200
+
+→ user 1 - Update user 1
+  PATCH http://arch.homework/user/47/ [200 OK, 471B, 81ms]
+  ✓  Status code is 200
+  ✓  Last name is {{testLastName}}
+
+→ Register user 2
+  POST http://arch.homework/register/ [201 Created, 999B, 383ms]
+  ✓  Status code is 201
+
+→ Authenticte user 2
+  POST http://arch.homework/login/ [200 OK, 994B, 580ms]
+  ✓  Status code is 200
+
+→ user 2 - Get user 1
+  GET http://arch.homework/user/47/ [403 Forbidden, 225B, 73ms]
+  ✓  Status code is 403
+
+→ user 2 - Update user 1
+  PATCH http://arch.homework/user/47/ [403 Forbidden, 225B, 47ms]
+  ✓  Status code is 403
+
+┌─────────────────────────┬────────────────────┬────────────────────┐
+│                         │           executed │             failed │
+├─────────────────────────┼────────────────────┼────────────────────┤
+│              iterations │                  1 │                  0 │
+├─────────────────────────┼────────────────────┼────────────────────┤
+│                requests │                  9 │                  0 │
+├─────────────────────────┼────────────────────┼────────────────────┤
+│            test-scripts │                 18 │                  0 │
+├─────────────────────────┼────────────────────┼────────────────────┤
+│      prerequest-scripts │                  9 │                  0 │
+├─────────────────────────┼────────────────────┼────────────────────┤
+│              assertions │                 10 │                  0 │
+├─────────────────────────┴────────────────────┴────────────────────┤
+│ total run duration: 2.5s                                          │
+├───────────────────────────────────────────────────────────────────┤
+│ total data received: 3.95KB (approx)                              │
+├───────────────────────────────────────────────────────────────────┤
+│ average response time: 226ms [min: 28ms, max: 580ms, s.d.: 202ms] │
+└───────────────────────────────────────────────────────────────────┘

@@ -70,11 +70,15 @@ components:
       type: object
       required:
         - iss
+        - sub
         - payload
       properties:
         iss:
           type: string
           description: A JWT token issuer
+        sub:
+          type: string
+          description: A JWT token subject
         payload:
           type: object
           additionalProperties: true

@@ -9,6 +9,9 @@ spec:
   jwtRules:
   - issuer: "affo"
     jwksUri: http://affo-auth.default.svc.cluster.local/jwks/
+    fromHeaders:
+      - name: Authorization
+        prefix: "Bearer "
     outputPayloadToHeader: X-JWT-Payload
     forwardOriginalToken: true
 ---
@@ -20,11 +23,14 @@ spec:
   selector:
     matchLabels:
       app: users
-  action: DENY
+  action: ALLOW
   rules:
   - from:
     - source:
-        notRequestPrincipals: ["*"]
+        requestPrincipals: ["affo/users"]
     to:
     - operation:
         paths: ["/user/*", "/logout/"]
+  - to:
+    - operation:
+        paths: ["/login/", "/register/"]

@@ -44,22 +44,22 @@ def create(user):
 
 
 def get(user_id):
-    _, payload = utils.jwt_read_from_header()
+    _, payload = utils.jwt_read_from_header(request=connexion.request)
 
     AccessDenied.require_condition(payload and str(user_id) in (str(payload["user_id"]), "current"), "Access denied")
 
-    user_ = utils.get_user_by_id(user_id)
+    user_ = utils.get_user_by_id(user_id, request=connexion.request)
 
     return user_schema.dump(user_).data
 
 
 def update(user_id, user1):
-    _, payload = utils.jwt_read_from_header()
+    _, payload = utils.jwt_read_from_header(request=connexion.request)
 
     AccessDenied.require_condition(payload and str(user_id) in (str(payload["user_id"]), "current"), "Access denied")
 
     with db.session.begin(subtransactions=True):
-        user_ = utils.get_user_by_id(user_id)
+        user_ = utils.get_user_by_id(user_id, request=connexion.request)
 
         for k, v in user1.items():
             setattr(user_, k, v)

@@ -4,7 +4,7 @@ from pytest_toolbelt import matchers
 
 
 def test_jwt_encode(client):
-    response = client.post("/jwt/encode/", json={"iss": "test", "payload": {"user_id": 123}})
+    response = client.post("/jwt/encode/", json={"iss": "test", "sub": "test", "payload": {"user_id": 123}})
     assert_that(response, matchers.has_status(200))
 
 

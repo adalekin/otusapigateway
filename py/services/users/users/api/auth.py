@@ -31,7 +31,7 @@ def login(login):
 
 
 def logout():
-    access_token, _ = utils.jwt_read_from_header()
+    access_token, _ = utils.jwt_read_from_header(request=connexion.request)
     utils.jwt_blacklist_token(access_token)
 
     return connexion.NoContent, 204

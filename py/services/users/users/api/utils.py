@@ -20,7 +20,7 @@ def _auth_api(path):
 
 
 def jwt_encode_token(payload):
-    response = AUTH_SESSION.post(_auth_api("/jwt/encode/"), json={"iss": "affo", "payload": payload})
+    response = AUTH_SESSION.post(_auth_api("/jwt/encode/"), json={"iss": "affo", "sub": "users", "payload": payload})
     response.raise_for_status()
 
     return response.json()["access_token"]
@@ -31,19 +31,19 @@ def jwt_blacklist_token(access_token):
     response.raise_for_status()
 
 
-def jwt_read_from_header():
+def jwt_read_from_header(request):
     token = None
     payload = None
 
-    payload_string = connexion.request.headers.get("X-JWT-Payload")
-
-    if payload_string:
-        payload = json.loads(base64.b64decode(payload_string))
-
-    token_string = connexion.request.headers.get("X-JWT-Token")
+    token_string = request.headers.get("Authorization")
 
     if token_string:
-        bearer, _, token = header.partition(" ")
+        bearer, _, token = token_string.partition(" ")
+
+    payload_string = request.headers.get("X-JWT-Payload")
+
+    if payload_string:
+        payload = json.loads(base64.b64decode(payload_string + "=" * ((4 - len(payload_string) % 4) % 4)))
 
     return token, payload
 
@@ -52,10 +52,11 @@ def access_token_for_user(user):
     return jwt_encode_token(payload={"user_id": user.id})
 
 
-def get_user_by_id(user_id):
+def get_user_by_id(user_id, request=None):
     if user_id == "current":
-        _, payload = jwt_read_from_header()
-        user_id = payload["user_id"]
+        if request is not None:
+            _, payload = jwt_read_from_header(request)
+            user_id = payload["user_id"]
 
     user = db.session.query(User).filter(User.id == user_id).one_or_none()
 

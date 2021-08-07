@@ -1,4 +1,9 @@
 ---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: kiali
+---
 apiVersion: kiali.io/v1alpha1
 kind: Kiali
 metadata:
@@ -43,8 +48,9 @@ spec:
 
     tracing:
       enabled: true
-      in_cluster_url: "http://jaeger-query.jaeger:16686"
-      url: "http://jaeger-query.jaeger:16686"
+      in_cluster_url: "http://jaeger-query.jaeger.svc.local:16685"
+      url: "http://arch.homework:16686"
+      use_grpc: true
       component_status:
         namespace: "jaeger"
         app_label: "jaeger"

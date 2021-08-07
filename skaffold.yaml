@@ -14,10 +14,10 @@ deploy:
   kubectl:
     manifests:
     - "deployments/k8s/*.yaml"
+    - "deployments/k8s/istio/*.yaml"
     - "deployments/k8s/jaeger/*.yaml"
     - "deployments/k8s/kiali/*.yaml"
     - "deployments/k8s/prometheus/*.yaml"
-    - "deployments/k8s/istio/*.yaml"
   helm:
     releases:
       - name: affo
